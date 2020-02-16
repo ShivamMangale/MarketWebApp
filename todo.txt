@@ -1,0 +1,28 @@
+create database schemes
+create login/registration for vendor
+create login/registration for customer
+view current products listing for vendor
+delete a listing by vendor
+convert a listing to ready to dispatch(ROD)
+view RODs
+dispatch ROD 
+display all dispatched orders with reviews and ratings
+selecting vendor in search results should display rating and reviews
+
+customer should be able to search for products(exact string matching)
+display vendor,price,quantity left on searching
+also ability to sort by price, quantity left and rating of seller
+select and place order
+be able to view status of all products ordered
+dispatch status(waiting,placed,dispatched,cancelled)
+if waiting quantity left
+able to rate and review seller on order placement
+
+
+
+trim in mongodb
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+complete routes/(customers.js,products.js,orders.js)
+complete models/order.model.js

@@ -4,10 +4,14 @@ const mongoose = require('mongoose')
 
 const app = express();
 const PORT = 5000;
-const userRoutes = express.Router();
-// const userRoutes = require('./routes/users');
+// const vendorRoutes = express.Router();
+const customerRoutes = express.Router();
+const productRoutes = express.Router();
+const vendorRoutes = require('./routes/vendors');
 
-let User = require('./models/user.model');
+// let Vendor = require('./models/vendor.model');
+let Customer = require('./models/customer.model');
+let Product = require('./models/product.model');
 
 app.use(cors());
 app.use(express.json());
@@ -21,74 +25,167 @@ connection.once('open', function() {
 
 // API endpoints
 
-// Getting all the users
-userRoutes.route('/').get(function(req, res) {
-    User.find(function(err, users) {
+
+// Getting all the customers
+customerRoutes.route('/').get(function(req, res) {
+    Customer.find(function(err, customers) {
         if (err) {
             console.log(err);
         } else {
             console.log("done");
-            res.json(users);
+            res.json(customers);
         }
     });
 });
 
-// Adding a new user
-userRoutes.route('/add').post(function(req, res) {
+// Adding a new customer
+customerRoutes.route('/add').post(function(req, res) {
     const username = req.body.username;
     const email = req.body.email;
-    // let user = new User(req.body);
-    const user = new User(
+    const password = req.body.password;
+    // let customer = new Customer(req.body);
+    const customer = new Customer(
         {
             username,
-            email
+            email,
+            password
         }
     );
-    user.save()
-        .then(user => {
+    customer.save()
+        .then(customer => {
             res.status(200).json({
-                'User': 'User added successfully',
-                "username": user.username,
-                "email": user.email});
+                'Customer': 'Customer added successfully',
+                "username": customer.username,
+                "email": customer.email,
+                "password": customer.password});
         })
         .catch(err => {
-            res.status(400).send('Errors');
+            res.status(400).send('Errors' + err);
         });
 });
 
-// Getting a user by id
-userRoutes.route('/:id').get(function(req, res) {
+// Getting a customer by id
+customerRoutes.route('/:id').get(function(req, res) {
     let id = req.params.id;
-    User.findById(id)
-      .then(user => res.json(user))
+    Customer.findById(id)
+      .then(customer => res.json(customer))
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
 
 
-// Deleting a user by id
-userRoutes.route('/:id').delete(function(req, res) {
+// Deleting a customer by id
+customerRoutes.route('/:id').delete(function(req, res) {
     let id = req.params.id;
-    User.findByIdAndDelete(id)
-        .then(() => res.json('Exercise deleted.'))
+    Customer.findByIdAndDelete(id)
+        .then(() => res.json('Customer deleted.'))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-//Updating the details by id
-userRoutes.route('/update/:id').post((req, res) => {
-    User.findById(req.params.id)
-      .then(user => {
-        user.username = req.body.username;
-        user.email = req.body.email;
+//Updating the details of a customer by id
+customerRoutes.route('/update/:id').post((req, res) => {
+    Customer.findById(req.params.id)
+      .then(customer => {
+        customer.username = req.body.username;
+        customer.email = req.body.email;
+        customer.password = req.body.password;
 
-        user.save()
-          .then(() => res.json('Exercise updated!'))
+        customer.save()
+          .then(() => res.json('Customer updated!'))
           .catch(err => res.status(400).json('Error: ' + err));
       })
       .catch(err => res.status(400).json('Error: ' + err));
   });
   
-app.use('/users', userRoutes);
+
+
+// Getting all the products
+productRoutes.route('/').get(function(req, res) {
+    Product.find(function(err, products) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("done");
+            res.json(products);
+        }
+    });
+});
+
+// Adding a new product
+productRoutes.route('/add').post(function(req, res) {
+    const name = req.body.name;
+    const quantity = req.body.quantity;
+    const price = req.body.price;
+    const vendorid = req.body.vendorid;
+    const buyers = req.body.buyers;
+    // let product = new Product(req.body);
+    const product = new Product(
+        {
+            name,
+            quantity,
+            price,
+            vendorid,
+            buyers
+        }
+    );
+    product.save()
+        .then(product => {
+            res.status(200).json({
+                'Product': 'Product added successfully',
+                "name": product.name,
+                "quantity": product.quantity,
+                "price": product.price,
+                "vendorid": product.vendorid,
+                "buyers": product.buyers,
+                });
+        })
+        .catch(err => {
+            res.status(400).send('Errors' + err);
+        });
+});
+
+// Getting a product by id
+productRoutes.route('/:id').get(function(req, res) {
+    let id = req.params.id;
+    Product.findById(id)
+      .then(product => res.json(product))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
+
+// Deleting a product by id
+productRoutes.route('/:id').delete(function(req, res) {
+    let id = req.params.id;
+    Product.findByIdAndDelete(id)
+        .then(() => res.json('Product deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+//Updating the details of a product by id
+productRoutes.route('/update/:id').post((req, res) => {
+    Product.findById(req.params.id)
+      .then(product => {
+        product.name = req.body.name;
+        product.quantity = req.body.quantity;
+        product.price = req.body.price;
+        product.vendorid = req.body.vendorid;
+        product.buyers = req.body.buyers;
+
+        product.save()
+          .then(() => res.json('Product updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+  
+
+
+app.use('/vendors', vendorRoutes);
+
+app.use('/customers', customerRoutes);
+
+app.use('/products', productRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on port: " + PORT);
