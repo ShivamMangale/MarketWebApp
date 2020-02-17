@@ -26,3 +26,10 @@ trim in mongodb
 --------------------------------------------------------------------------------------------------------------------------------
 complete routes/(customers.js,products.js,orders.js)
 complete models/order.model.js
+change order such that dont need product details, only id is enough
+add login and signup functionality(single user experience)
+verify orders.js working
+verify ids while placing products and orders
+do error handling
+
+try localstorage for user functionality

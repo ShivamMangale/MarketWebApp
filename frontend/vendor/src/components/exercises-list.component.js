@@ -1,67 +1,64 @@
 import React,{Component} from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const Vendor = props => (
+const User = props => (
     <tr>
-      <td>{props.vendor.username}</td>
-      <td>{props.vendor.email}</td>
-      {/* <td>
-        <Link to={"/edit/"+props.vendor._id}>edit</Link> | <a href="#" onClick={() => { props.deleteVendor(props.vendor._id) }}>delete</a>
-      </td> */}
+      <td>{props.user.username}</td>
+      <td>{props.user.email}</td>
+      <td>
+        <Link to={"/edit/"+props.user._id}>edit</Link> | <a href="#" onClick={() => { props.deleteUser(props.user._id) }}>delete</a>
+      </td>
     </tr>
   )
 
-export default class VendorList extends Component{
+export default class UserList extends Component{
     constructor(props){
         super(props);
 
-        this.deletevendor = this.deleteVendor.bind(this);
+        this.deleteuser = this.deleteUser.bind(this);
 
-        this.state = {vendor : []}
+        this.state = {users : []}
     }
 
     componentDidMount(){
-        axios.get('http://localhost:5000/vendors')
+        axios.get('http://localhost:5000/users')
             .then(response =>{
-                console.log("Entered");
-                this.setState({ vendor: response.data });
-                // console.log(this.state.vendor);
+                this.setState({ user: response.data })
             })
             .catch((error) =>{
                 console.log(error);
             })
     }
 
-    deleteVendor(id) {
-        axios.delete('http://localhost:5000/vendors/'+id)
+    deleteUser(id) {
+        axios.delete('http://localhost:5000/users/'+id)
           .then(response => { console.log(response.data)});
 
         this.setState({
-          vendors: this.state.vendor.filter(el => el._id !== id)
+          users: this.state.users.filter(el => el._id !== id)
         })
       }
 
-      vendorList() {
-        return this.state.vendor.map(currentvendor => {
-          console.log(currentvendor);
-          return <Vendor vendor={currentvendor} deleteVendor={this.deleteVendor} key={currentvendor._id}/>;
+      userList() {
+        return this.state.users.map(currentuser => {
+          return <User user={currentuser} deleteUser={this.deleteUser} key={currentuser._id}/>;
         })
       }
 
     render(){
         return(
              <div>
-                <h3>Vendor</h3>
+                <h3>User</h3>
                 <table className="table">
                 <thead className="thead-light">
                     <tr>
-                    <th>Vendorname</th>
+                    <th>Username</th>
                     <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
-                    { this.vendorList() }
+                    { this.userList() }
                 </tbody>
                 </table>
             </div>

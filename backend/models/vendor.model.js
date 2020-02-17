@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
-var product = new mongoose.Schema({
-    name: String,
-    quantity: Number,
-    price: Number
-})
+// var productid = new mongoose.Schema({
+//     // name: String,
+//     // quantity: Number,
+//     // price: Number
+//     productid: mongoose.Schema.ObjectId
+// })
 
 let Vendor = new mongoose.Schema({
     // _id: Number,
@@ -20,9 +21,7 @@ let Vendor = new mongoose.Schema({
         type: String,
         required: true
     },
-    products: {
-        type: product
-    }
+    products: [mongoose.Schema.ObjectId]
 });
 
 module.exports = mongoose.model('Vendor', Vendor);

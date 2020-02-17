@@ -22,7 +22,11 @@ let Product = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         required: true
     },
-    buyers: [booking]
+    buyers: [booking],
+    status: {
+        type: String,
+        // required: true
+    }
 });
 
 module.exports = mongoose.model('Product', Product);

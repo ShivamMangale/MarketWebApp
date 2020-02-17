@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import App from './App';
+import Appcustomer from './Appcustomer';
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
+if(true){
+ReactDOM.render(<Appcustomer />, document.getElementById('root'));
+}
+else{
+    ReactDOM.render(<App />, document.getElementById('root'));
+}
 serviceWorker.unregister();

@@ -1,65 +1,57 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 
-export default class CreateVendor extends Component{
+
+
+export default class CreateProduct extends Component{
     constructor(props){
         super(props);
 
-        this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeType = this.onChangeType.bind(this);
+        this.onChangeName = this.onChangeName.bind(this);
+        this.onChangePrice = this.onChangePrice.bind(this);
+        this.onChangeQuantity = this.onChangeQuantity.bind(this);
+        this.onChangeVendorId = this.onChangeVendorId.bind(this);
+        // this.onChangeType = this.onChangeType.bind(this);
         // this.onChangeProducts = this.onChangeProducts.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
 
         this.state = {
-            username: ' ',
-            email: ' ',
-            password: '',
-            // products: '',
-            type: "customer",
-            usertypes: []
+            name: '',
+            price: '',
+            quantity: '',
+            vendorid: '',
+            status: ''
         }
     }
 
     componentDidMount(){
-        // axios.get('http://localhost:5000/users')
-        //     .then(response =>{
-        //         if(response.data.length > 0){
-        //             this.setState({
-        //                 vendors: response.data.map(vendor => vendor.username),
-        //                 // vendors.response.data.map(email => vendor.email),
-        //                 vendorname: response.data[0].username 
-        //             })
-        //         }
-        //     })
+        // this.setState({
+        //     usertypes: ["vendor", "customer"]
+        // });
+    }
+    
+    onChangeName(e){
         this.setState({
-            usertypes: ["vendor", "customer"]
+            name: e.target.value
         });
     }
     
-    onChangeUsername(e){
+    onChangePrice(e){
         this.setState({
-            username: e.target.value
-        });
-    }
-    
-    onChangeEmail(e){
-        this.setState({
-            email: e.target.value
+            price: e.target.value
         });
     }
 
-    onChangePassword(e){
+    onChangeQuantity(e){
         this.setState({
-            password: e.target.value
+            quantity: e.target.value
         });
     }
 
-    onChangeType(e){
+    onChangeVendorId(e){
         this.setState({
-            type: e.target.value
+            vendorid: e.target.value
         });
     }
 
@@ -72,63 +64,68 @@ export default class CreateVendor extends Component{
     onSubmit(e){
         e.preventDefault();
 
-        const user = {
-            username: this.state.username,
-            email: this.state.email,
-            password: this.state.password,
+        const product = {
+            name: this.state.name,
+            price: this.state.price,
+            quantity: this.state.quantity,
+            vendorid: this.state.vendorid,
+            status: "Waiting",
             // products: this.state.products
         }
 
-        console.log(user);
-        if(this.state.type === "vendor"){
-            axios.post('http://localhost:5000/vendors/add', user)
-            .then(res => console.log(res.data));
-        }
-        else{
-            axios.post('http://localhost:5000/customers/add', user)
-            .then(res => console.log(res.data));
-        }
-
+        console.log(product);
+        axios.post('http://localhost:5000/products/add', product)
+            .then(res => console.log(res.data))
+            .catch(err => console.log('Error: ' + err));
         // window.location = '/';
         this.setState({
-            username: '',
-            email: '',
-            password: '',
+            name: '',
+            price: '',
+            quantity: '',
+            vendorid: '',
             // products: ''
-            type: "customer"
         });
     }
 
     render(){
         return(
         <div>
-            <h3>Create New Vendor</h3>
+            <h3>Create New Product</h3>
             <form onSubmit={this.onSubmit}>
             <div className="form-group"> 
-                <label>Username: </label>
+                <label>Name: </label>
                 <input  type="text"
                     required
                     className="form-control"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
+                    value={this.state.name}
+                    onChange={this.onChangeName}
                     />
             </div>
             <div className="form-group"> 
-                <label>Email: </label>
+                <label>Price: </label>
                 <input  type="text"
                     required
                     className="form-control"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
+                    value={this.state.price}
+                    onChange={this.onChangePrice}
                     />
             </div>
             <div className="form-group"> 
-                <label>Password: </label>
+                <label>Quantity: </label>
                 <input  type="text"
                     required
                     className="form-control"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
+                    value={this.state.quantity}
+                    onChange={this.onChangeQuantity}
+                    />
+            </div>
+            <div className="form-group"> 
+                <label>VendorId: </label>
+                <input  type="text"
+                    required
+                    className="form-control"
+                    value={this.state.vendorid}
+                    onChange={this.onChangeVendorId}
                     />
             </div>
             {/* <div className="form-group"> 
@@ -140,7 +137,7 @@ export default class CreateVendor extends Component{
                     onChange={this.onChangeProducts}
                     />
             </div> */}
-            <div className="form-group"> 
+            {/* <div className="form-group"> 
                 <label>Usernames: </label>
                     <select ref="userInput"
                         required
@@ -156,11 +153,11 @@ export default class CreateVendor extends Component{
                             })
                         }
                     </select>
-            </div>
+            </div> */}
             {/* <div className="form-group">
                 <form>
-                    <input type="radio" id="vendor" name="gender" value="vendor"></input>
-                    <label for="vendor">Vendor</label><br></br>
+                    <input type="radio" id="product" name="gender" value="product"></input>
+                    <label for="product">Product</label><br></br>
                     <input type="radio" id="customer" name="gender" value="customer"></input>
                     <label for="customer">Customer</label>
                 </form> 
