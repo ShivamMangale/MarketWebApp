@@ -68,7 +68,7 @@ export default class CreateProduct extends Component{
             name: this.state.name,
             price: this.state.price,
             quantity: this.state.quantity,
-            vendorid: this.state.vendorid,
+            vendorid: localStorage.getItem("id"),
             status: "Waiting",
             // products: this.state.products
         }
@@ -76,7 +76,7 @@ export default class CreateProduct extends Component{
         console.log(product);
         axios.post('http://localhost:5000/products/add', product)
             .then(res => console.log(res.data))
-            .catch(err => console.log('Error: ' + err));
+            .catch(err => alert(err + " Please try again"));
         // window.location = '/';
         this.setState({
             name: '',
@@ -119,51 +119,8 @@ export default class CreateProduct extends Component{
                     onChange={this.onChangeQuantity}
                     />
             </div>
-            <div className="form-group"> 
-                <label>VendorId: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.vendorid}
-                    onChange={this.onChangeVendorId}
-                    />
-            </div>
-            {/* <div className="form-group"> 
-                <label>Products: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.products}
-                    onChange={this.onChangeProducts}
-                    />
-            </div> */}
-            {/* <div className="form-group"> 
-                <label>Usernames: </label>
-                    <select ref="userInput"
-                        required
-                        className="form-control"
-                        value={this.state.type}
-                        onChange={this.onChangeType}>
-                        {
-                            this.state.usertypes.map(function(choice) {
-                            return <option 
-                                key={choice}
-                                value={choice}>{choice}
-                                </option>;
-                            })
-                        }
-                    </select>
-            </div> */}
-            {/* <div className="form-group">
-                <form>
-                    <input type="radio" id="product" name="gender" value="product"></input>
-                    <label for="product">Product</label><br></br>
-                    <input type="radio" id="customer" name="gender" value="customer"></input>
-                    <label for="customer">Customer</label>
-                </form> 
-            </div> */}
             <div className="form-group">
-                <input type="submit" value="Create User" className="btn btn-primary" />
+                <input type="submit" value="Create Product Listing" className="btn btn-primary" />
             </div>
         </form>
       </div>

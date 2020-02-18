@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import axios from 'axios';
-var sha1 = require('sha1');
 
 export default class CreateVendor extends Component{
     constructor(props){
@@ -15,8 +14,8 @@ export default class CreateVendor extends Component{
 
 
         this.state = {
-            username: ' ',
-            email: ' ',
+            username: '',
+            email: '',
             password: '',
             // products: '',
             type: "customer",
@@ -79,6 +78,7 @@ export default class CreateVendor extends Component{
             password: this.state.password,
             // products: this.state.products
         }
+
         console.log(user);
         if(this.state.type === "vendor"){
             axios.post('http://localhost:5000/vendors/add', user)
@@ -89,7 +89,6 @@ export default class CreateVendor extends Component{
             .then(res => console.log(res.data));
         }
 
-        // window.location = '/';
         this.setState({
             username: '',
             email: '',
@@ -102,7 +101,7 @@ export default class CreateVendor extends Component{
     render(){
         return(
         <div>
-            <h3>Create New Vendor</h3>
+            <h3>Sign Up</h3>
             <form onSubmit={this.onSubmit}>
             <div className="form-group"> 
                 <label>Username: </label>

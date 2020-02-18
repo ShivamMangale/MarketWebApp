@@ -37,7 +37,7 @@ export default class ReviewList extends Component{
 
       reviewList() {      
         return this.state.review.map(currentreview => {
-        if(currentreview.vendorid !== this.props.match.params.id){
+        if(currentreview.productid !== this.props.match.params.id){
             return null;
         }
         else{

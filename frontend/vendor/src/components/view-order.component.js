@@ -12,9 +12,9 @@ const Order1 = props => (
       </td>
       <td>{props.order.quantityleft}</td>
       <td>
-        <Link to={"/edit/"+props.order._id}>edit</Link> | <a href="/viewall" onClick={() => { props.deleteOrder(props.order._id) }}>Cancel</a>
+        <Link to={"/edit/"+props.order.productid + "/" + props.order._id}>edit</Link> | <a href="/viewall" onClick={() => { props.deleteOrder(props.order._id,props.order.quantity) }}>Cancel</a>
       </td>
-    </tr>
+      </tr>
   )
 
 const Order2 = props => (
@@ -39,7 +39,7 @@ const Order2 = props => (
       </td>
       <td>{props.order.quantityleft}</td>
       <td>
-        <Link to={"/review/"+props.order._id}>rate and review</Link>
+        <Link to={"/review/"+props.order.vendorid + "/" + props.order.productid}>rate and review</Link>
       </td>
     </tr>
   )
@@ -50,7 +50,7 @@ export default class OrderList extends Component{
 
         this.deleteorder = this.deleteOrder.bind(this);
 
-        this.state = {order : []}
+        this.state = {order : [],val: ''}
     }
 
     componentDidMount(){
@@ -65,7 +65,10 @@ export default class OrderList extends Component{
             })
     }
 
-    deleteOrder(id) {
+    deleteOrder(id,chan) {
+        axios.post('http://localhost:5000/upquantity/' + id + '/'+ chan)
+          .then(response => { console.log(response.data)});
+    
         axios.delete('http://localhost:5000/orders/'+id)
           .then(response => { console.log(response.data)});
 
@@ -76,9 +79,8 @@ export default class OrderList extends Component{
 
       orderList() {
         return this.state.order.map(currentorder => {
-        //   console.log(currentorder);
+        if(currentorder.customerid === localStorage.getItem("id")){
           if(currentorder.status === "waiting"){
-            console.log("found a waiting");
           return <Order1 order={currentorder} deleteOrder={this.deleteOrder} key={currentorder._id}/>;
           }
           else if(currentorder.status === "dispatched"){
@@ -87,6 +89,7 @@ export default class OrderList extends Component{
           else{
           return <Order2 order={currentorder} deleteOrder={this.deleteOrder} key={currentorder._id}/>;
           }
+        }
         })
       }
 
@@ -104,7 +107,7 @@ export default class OrderList extends Component{
                     <th>Quantity Left</th>
                    </tr>
                 </thead>
-                <tbody>
+                <tbody bgcolor="#E6E6FA">
                     { this.orderList() }
                 </tbody>
                 </table>

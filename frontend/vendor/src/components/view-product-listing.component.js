@@ -42,8 +42,11 @@ export default class ProductList extends Component{
 
     deleteProduct(id) {
         axios.delete('http://localhost:5000/products/'+id)
-          .then(response => { console.log(response.data)});
-
+          .then(response => { console.log(response.data)})
+          .catch((error) => { console.log(error);});
+        axios.post('http://localhost:5000/reviews/cancel'+ id)
+          .then(response => { console.log(response.data)})
+          .catch((error) => { console.log(error);});
         this.setState({
           product: this.state.product.filter(el => el._id !== id)
         })
@@ -53,11 +56,13 @@ export default class ProductList extends Component{
       productList() {
         return this.state.product.map(currentproduct => {
         //   console.log(currentproduct);
+        if(currentproduct.vendorid === localStorage.getItem("id")){
         if(currentproduct.status === "ready to dispatch" || currentproduct.status === "dispatched"){
             return null;
         }
         else{
           return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
+        }
         }
         })
       }
@@ -66,7 +71,7 @@ export default class ProductList extends Component{
         return(
           <div>
           <div>
-          <h3>Create New Exercise Log</h3>
+          <h3>Products List</h3>
           </div>
              <div>
                 <h3>Product</h3>

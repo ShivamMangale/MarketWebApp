@@ -1,20 +1,16 @@
 import React,{Component} from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 // let Prod = require('../../../../backend/models/product.model');
 
 
-// function changedtodispatch(req){
-//     const id = req.body._id;
-//     req.body.status = "dispatched";
-//     axios.post('http://localhost:5000/products/update'+id, req)
-//     .then(response => { console.log(response.data)});
-
-
-//     this.setState({
-//         product: this.state.product.filter(el => el._id !== id)
-//       })
-// }
+function changedtodispatch(id){
+    axios.post('http://localhost:5000/products/dispatch/' + id)
+      .then(response => { console.log(response.data)})
+      .catch((error) =>{
+          console.log(error);
+      })
+}
 
 const Product = props => (
     <tr>
@@ -23,10 +19,9 @@ const Product = props => (
       <td>{props.product.quantity}</td>
       <td>{props.product.status}</td>
       <td>{props.product.vendorid}</td>
-      {/* <td>
-        <Link to={"/edit/"+props.product._id}>edit</Link>
-        <button onclick = "changetodispatch(props)">dispatch</button>
-      </td> */}
+      <td>
+        <button href="/" onClick={() => { changedtodispatch(props.product._id) }}>dispatch</button>
+      </td>
     </tr>
   )
 

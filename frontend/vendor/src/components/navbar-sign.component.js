@@ -9,17 +9,11 @@ export default class Navbar extends Component {
         <Link to="/" className="navbar-brand">Bulk Order</Link>
         <div className="collpase navbar-collapse">
         <ul className="navbar-nav mr-auto">
-          {/* <li className="navbar-item">
-          <Link to="/viewreviews" className="nav-link">Products List</Link>
-          </li> */}
           <li className="navbar-item">
-          <Link to="/create" className="nav-link">Order a Product</Link>
+          <Link to="/" className="nav-link">Sign Up</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/viewall" className="nav-link">Your Orders</Link>
-          </li>
-          <li className="navbar-item">
-          <Link to="/" className="nav-link" onClick={() => { localStorage.clear() }}>Sign Out</Link>
+          <Link to="/signin" className="nav-link">Sign In</Link>
           </li>
         </ul>
         </div>

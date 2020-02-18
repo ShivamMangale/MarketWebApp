@@ -1,20 +1,15 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-  
-
 export default class CreateOrder extends Component{
     constructor(props){
         super(props);
 
         this.onChangeQuantity = this.onChangeQuantity.bind(this);
+        // this.onChangeEmail = this.onChangeEmail.bind(this);
+        // this.onChangePassword = this.onChangePassword.bind(this);
+        // this.onChangeType = this.onChangeType.bind(this);
+        // this.onChangeProducts = this.onChangeProducts.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
 
@@ -37,13 +32,14 @@ export default class CreateOrder extends Component{
         .then(response =>{
             console.log("the exact");
             this.setState({ product: response.data });
+            // console.log(this.state.product);
         })
         .catch((error) =>{
             console.log(error);
         });
-        this.setState({
-            usertypes: ["order", "customer"]
-        });
+        // this.setState({
+        //     usertypes: ["order", "customer"]
+        // });
     }
     
     onChangeQuantity(e){
@@ -51,6 +47,30 @@ export default class CreateOrder extends Component{
             quantity: e.target.value
         });
     }
+    
+    // onChangeEmail(e){
+    //     this.setState({
+    //         email: e.target.value
+    //     });
+    // }
+
+    // onChangePassword(e){
+    //     this.setState({
+    //         password: e.target.value
+    //     });
+    // }
+
+    // onChangeType(e){
+    //     this.setState({
+    //         type: e.target.value
+    //     });
+    // }
+
+    // onChangeProducts(e){
+    //     this.setState({
+    //         products: e.target.value
+    //     });
+    // }
 
     onSubmit(e){
         e.preventDefault();
@@ -58,14 +78,10 @@ export default class CreateOrder extends Component{
 
         
         // console.log(this.state.product);
-        axios.get('http://localhost:5000/products/getquantityleft/' + this.props.match.params.id)
-        .then(response =>{
-            console.log(response.data);
-            this.setState({ quantityleft: response.data });
-            // console.log(this.state.product);
-            
-        if(this.state.quantity > this.state.quantityleft){
-            alert("Quantity not possible. Please reduce the quantity appropriately.")
+
+
+        if(this.state.quantity > this.quantityleft){
+            console.log("Quantity not possible. Please reduce the quantity appropriately.")
             this.setState({
                 quantity: '',
                 products: [],
@@ -87,6 +103,7 @@ export default class CreateOrder extends Component{
             customerid: localStorage.getItem("id"),
             status: "waiting",
         }
+        console.log("cak");
         console.log(this.state.product);
         if(this.state.quantity === this.state.quantityleft){
             order.status = "ready to dispatch";
@@ -94,13 +111,14 @@ export default class CreateOrder extends Component{
         }
 
         console.log(order);
-        axios.post('http://localhost:5000/products/quantity/' + this.props.match.params.id + '/' + Number(this.state.quantityleft - order.quantity))
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
-        axios.post('http://localhost:5000/orders/add', order)
-            .then(res => console.log(res.data));
-        console.log("Now");
+        
+        axios.post('http://localhost:5000/orders/update/' + this.props.match.params.orderid, order)
+            .then(res => console.log(res.data))
+            .catch((error) =>{
+                console.log(error);
+            });
         }
+
         // window.location = '/';
         this.setState({
             quantity: '',
@@ -111,21 +129,14 @@ export default class CreateOrder extends Component{
             customerid: '',
             status: ''
         });
-        alert("Order Created");
-        })
-        .catch((error) =>{
-            console.log(error);
-        });
-        // sleep(500);
-     
     }
 
     render(){
         return(
         <div>
-            <h3>Create New Order</h3>
+            <h3>Edit Order</h3>
             <form onSubmit={this.onSubmit}>
-            <div className="form-group" > 
+            <div className="form-group"> 
                 <label>Quantity: </label>
                 <input  type="text"
                     required

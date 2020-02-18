@@ -9,6 +9,9 @@ const Product = props => (
       <td>{props.product.quantity}</td>
       <td>{props.product.status}</td>
       <td>{props.product.vendorid}</td>
+      <td>        
+        <Link to={"/viewproductreview/"+props.product._id}>View Reviews</Link>
+      </td>
     </tr>
   )
 

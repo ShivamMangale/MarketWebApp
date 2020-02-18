@@ -10,8 +10,10 @@ const Product = props => (
       <td>{props.product.name}</td>
       <td>{props.product.price}</td>
       <td>{props.product.quantityleft}</td>
-      <td>{props.product.status}</td>
-      <td>{props.product.vendorid}</td>
+      {/* <td>{props.product.status}</td> */}
+      <td>
+        <Link to={"/viewreview/"+props.product.vendorid}>{props.product.vendorid}</Link>
+      </td>      
       <td>{props.product.rating}</td>
       <td>
         <Link to={"/orders/add/"+props.product._id}>Place Order</Link>
@@ -32,7 +34,9 @@ export default class ProductList extends Component{
                       product: [], 
                       review: [],
                       sorttype: 'price', 
-                      types: ["price", "quantity left", "seller rating"]};
+                      types: ["price", "quantity left", "seller rating"],
+                      quantityleft: ''
+                    };
     }
 
     componentDidMount(){
@@ -44,6 +48,7 @@ export default class ProductList extends Component{
             })
             .catch((error) =>{
                 console.log(error);
+                alert(error);
             });
         axios.get('http://localhost:5000/reviews')
             .then(response =>{
@@ -53,6 +58,7 @@ export default class ProductList extends Component{
             })
             .catch((error) =>{
                 console.log(error);
+                alert(error);
             });
     }
 
@@ -98,11 +104,11 @@ export default class ProductList extends Component{
         listofproducts = sort(this.state.product).asc(u => u.quantityleft);
         }
         else{
-        listofproducts = sort(this.state.product).asc(u => u.rating);
+        listofproducts = sort(this.state.product).desc(u => u.rating);
         }
         return listofproducts.map(currentproduct => {
         //   console.log(currentproduct.name);
-        if(currentproduct.name !== this.state.name){
+        if((currentproduct.name !== this.state.name && this.state.name) || (currentproduct.status !== "waiting" && currentproduct.status !== "Waiting")){
             // console.log(this.state.search);
             return null;
         }
@@ -166,7 +172,7 @@ export default class ProductList extends Component{
                     <th>Productname</th>
                     <th>Price</th>
                     <th>Quantity Left</th>
-                    <th>Status</th>
+                    {/* <th>Status</th> */}
                     <th>VendorId</th>
                     <th>Rating</th>
                     </tr>

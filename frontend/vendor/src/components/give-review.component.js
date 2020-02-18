@@ -13,11 +13,13 @@ export default class CreateReview extends Component{
         this.state = {
             vendorid: '',
             customerid: '',
+            productid: '',
             content: '',
             rating: '',
         }
     }
     
+
     onChangeContent(e){
         this.setState({
             content: e.target.value
@@ -35,7 +37,7 @@ export default class CreateReview extends Component{
 
         const review= {
             vendorid: this.props.match.params.id,
-            // productid: this.state.productid,
+            productid: this.props.match.params.prodid,
             customerid: this.props.match.params.id,//use user id
             content: this.state.content,
             rating: this.state.rating,
@@ -49,7 +51,7 @@ export default class CreateReview extends Component{
         // window.location = '/';
         this.setState({
             vendorid: '',
-            // productid: '',
+            productid: '',
             customerid: '',
             content: '',
             rating: '',
