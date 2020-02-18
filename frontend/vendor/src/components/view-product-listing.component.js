@@ -1,17 +1,20 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import sort from 'fast-sort';
+
 
 const Product = props => (
+
     <tr>
       <td>{props.product.name}</td>
       <td>{props.product.price}</td>
-      <td>{props.product.quantity}</td>
+      <td>{props.product.quantityleft}</td>
       <td>{props.product.status}</td>
       <td>{props.product.vendorid}</td>
       <td>{props.product.buyers}</td>
       <td>
-        <Link to={"/edit/"+props.product._id}>edit</Link> | <a href="/viewall" onClick={() => { props.deleteProduct(props.product._id) }}>delete</a>
+        <a href="/viewall" onClick={() => { props.deleteProduct(props.product._id) }}>delete</a>
       </td>
     </tr>
   )
@@ -20,9 +23,9 @@ export default class ProductList extends Component{
     constructor(props){
         super(props);
 
-        this.deleteproduct = this.deleteProduct.bind(this);
+        this.deleteProduct = this.deleteProduct.bind(this);
 
-        this.state = {product : []}
+        this.state = {product : []};
     }
 
     componentDidMount(){
@@ -46,6 +49,7 @@ export default class ProductList extends Component{
         })
       }
 
+
       productList() {
         return this.state.product.map(currentproduct => {
         //   console.log(currentproduct);
@@ -60,6 +64,10 @@ export default class ProductList extends Component{
 
     render(){
         return(
+          <div>
+          <div>
+          <h3>Create New Exercise Log</h3>
+          </div>
              <div>
                 <h3>Product</h3>
                 <table className="table">
@@ -67,16 +75,18 @@ export default class ProductList extends Component{
                     <tr>
                     <th>Productname</th>
                     <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Quantity Left</th>
                     <th>Status</th>
                     <th>VendorId</th>
                     <th>Customers</th>
+                    <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     { this.productList() }
                 </tbody>
                 </table>
+            </div>
             </div>
         )
     }

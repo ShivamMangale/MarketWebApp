@@ -33,3 +33,10 @@ verify ids while placing products and orders
 do error handling
 
 try localstorage for user functionality
+implement quantityleft by checking from product id
+
+average rating of vendor
+set a limit on quantity of order with quantityleft max(do if greater then set limit when entering itself)
+update the ids everywhere
+update user id from localstorage
+change statuses of all orders

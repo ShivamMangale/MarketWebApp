@@ -18,6 +18,7 @@ productRoutes.route('/').get(function(req, res) {
 productRoutes.route('/add').post(function(req, res) {
     const name = req.body.name;
     const quantity = req.body.quantity;
+    const quantityleft = req.body.quantity;
     const price = req.body.price;
     const vendorid = req.body.vendorid;
     const buyers = req.body.buyers;
@@ -29,6 +30,7 @@ productRoutes.route('/add').post(function(req, res) {
         {
             name,
             quantity,
+            quantityleft,
             price,
             vendorid,
             buyers,
@@ -41,6 +43,7 @@ productRoutes.route('/add').post(function(req, res) {
                 'Product': 'Product added successfully',
                 "name": product.name,
                 "quantity": product.quantity,
+                "quantityleft": product.quantityleft,
                 "price": product.price,
                 "vendorid": product.vendorid,
                 "buyers": product.buyers,
@@ -77,6 +80,7 @@ productRoutes.route('/update/:id').post((req, res) => {
       .then(product => {
         product.name = req.body.name;
         product.quantity = req.body.quantity;
+        product.quantityleft = req.body.quantityleft || req.body.quantity;
         product.price = req.body.price;
         product.vendorid = req.body.vendorid;
         product.buyers = req.body.buyers;

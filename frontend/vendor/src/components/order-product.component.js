@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import sort from 'fast-sort';
 
 var searched = "kpandvpnea";
 
@@ -8,10 +9,10 @@ const Product = props => (
     <tr>
       <td>{props.product.name}</td>
       <td>{props.product.price}</td>
-      <td>{props.product.quantity}</td>
+      <td>{props.product.quantityleft}</td>
       <td>{props.product.status}</td>
       <td>{props.product.vendorid}</td>
-      <td>{props.product.buyers}</td>
+      <td>{props.product.rating}</td>
       <td>
         <Link to={"/orders/add/"+props.product._id}>Place Order</Link>
       </td>
@@ -24,8 +25,14 @@ export default class ProductList extends Component{
 
         this.onChangeName = this.onChangeName.bind(this);
         this.deleteproduct = this.deleteProduct.bind(this);
+        this.onChangeSortType = this.onChangeSortType.bind(this);
+        this.getrating = this.getrating.bind(this);
 
-        this.state = {name : '',product: []};
+        this.state = {name : '',
+                      product: [], 
+                      review: [],
+                      sorttype: 'price', 
+                      types: ["price", "quantity left", "seller rating"]};
     }
 
     componentDidMount(){
@@ -37,7 +44,16 @@ export default class ProductList extends Component{
             })
             .catch((error) =>{
                 console.log(error);
+            });
+        axios.get('http://localhost:5000/reviews')
+            .then(response =>{
+                console.log("Entered");
+                this.setState({ review: response.data });
+                console.log(this.state.review);
             })
+            .catch((error) =>{
+                console.log(error);
+            });
     }
 
     deleteProduct(id) {
@@ -49,14 +65,49 @@ export default class ProductList extends Component{
         })
       }
 
+      onChangeSortType(e){
+        this.setState({
+            sorttype: e.target.value
+        });
+      }
+
+      getrating(id){
+        let val = 0;
+        let co = 0;
+        let final = 0.0;
+        this.state.review.map(currentreview => {
+          if(currentreview.vendorid === id){
+              val = val + currentreview.rating;
+              co = co + 1;
+          }
+          })
+        if(co === 0){
+          co = 1;
+        }
+        final = val/co;
+        console.log(id," ",val);
+        return final;
+      }
+
       productList() {
-        return this.state.product.map(currentproduct => {
+        let listofproducts = '';
+        if(this.state.sorttype === "price"){
+        listofproducts = sort(this.state.product).asc(u => u.price);
+        }
+        else if(this.state.sorttype === "quantity left"){
+        listofproducts = sort(this.state.product).asc(u => u.quantityleft);
+        }
+        else{
+        listofproducts = sort(this.state.product).asc(u => u.rating);
+        }
+        return listofproducts.map(currentproduct => {
         //   console.log(currentproduct.name);
         if(currentproduct.name !== this.state.name){
             // console.log(this.state.search);
             return null;
         }
         else{
+          currentproduct.rating = this.getrating(currentproduct.vendorid);
           return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
         }
         })
@@ -68,42 +119,28 @@ export default class ProductList extends Component{
         });
     }
 
-    // onSubmit(e){
-    //     e.preventDefault();
-    //     console.log("submitted");
-    //     // const user = {
-    //     //     username: this.state.username,
-    //     //     email: this.state.email,
-    //     //     password: this.state.password,
-    //     //     // products: this.state.products
-    //     // }
-
-    //     // console.log(user);
-    //     // if(this.state.type === "vendor"){
-    //     //     axios.post('http://localhost:5000/vendors/add', user)
-    //     //     .then(res => console.log(res.data));
-    //     // }
-    //     // else{
-    //     //     axios.post('http://localhost:5000/customers/add', user)
-    //     //     .then(res => console.log(res.data));
-    //     // }
-
-    //     // // window.location = '/';
-    //     // this.setState({
-    //     //     username: '',
-    //     //     email: '',
-    //     //     password: '',
-    //     //     // products: ''
-    //     //     type: "customer"
-    //     // });
-    //     this.setState({
-    //         search: this.state.name,
-    //     });
-    // }
-
     render(){
         return(
             <div>
+            <form onSubmit={this.onSubmit}>
+            <div className="form-group"> 
+              <label>Sort by: </label>
+              <select ref="userInput"
+                  required
+                  className="form-control"
+                  value={this.state.sorttype}
+                  onChange={this.onChangeSortType}>
+                  {
+                    this.state.types.map(function(type) {
+                      return <option 
+                        key={type}
+                        value={type}>{type}
+                        </option>;
+                    })
+                  }
+              </select>
+            </div>
+          </form>
             <div>
             <h3>Search by Product Name</h3>
             <form onSubmit={this.onSubmit}>
@@ -128,10 +165,10 @@ export default class ProductList extends Component{
                     <tr>
                     <th>Productname</th>
                     <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Quantity Left</th>
                     <th>Status</th>
                     <th>VendorId</th>
-                    <th>Customers</th>
+                    <th>Rating</th>
                     </tr>
                 </thead>
                 <tbody>

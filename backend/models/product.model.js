@@ -14,6 +14,10 @@ let Product = new mongoose.Schema({
         type: Number,
         required: true
     },
+    quantityleft:{
+        type: Number,
+        required: true
+    },
     price: {
         type: Number,
         required: true
@@ -26,6 +30,9 @@ let Product = new mongoose.Schema({
     status: {
         type: String,
         // required: true
+    },
+    rating: {
+        type: Number
     }
 });
 

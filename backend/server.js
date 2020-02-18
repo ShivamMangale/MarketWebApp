@@ -9,6 +9,7 @@ const vendorRoutes = require('./routes/vendors');
 const customerRoutes = require('./routes/customers');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+const reviewRoutes = require('./routes/reviews');
 
 // let Vendor = require('./models/vendor.model');
 // let Customer = require('./models/customer.model');
@@ -34,6 +35,8 @@ app.use('/customers', customerRoutes);
 app.use('/products', productRoutes);
 
 app.use('/orders', orderRoutes);
+
+app.use('/reviews', reviewRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on port: " + PORT);
