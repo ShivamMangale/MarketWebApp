@@ -37,7 +37,7 @@ vendorRoutes.route('/add').post(function(req, res) {
                 "password": vendor.password});
         })
         .catch(err => {
-            res.status(400).send('Errors');
+            res.status(400).send(err);
         });
 });
 

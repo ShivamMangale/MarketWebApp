@@ -2,6 +2,13 @@
 const productRoutes = require('express').Router();
 let Product = require('../models/product.model');
 
+
+// productRoutes.use(multer({ dest: ‘./uploads/’,
+//   rename: function (fieldname, filename) {
+//     return filename;
+//   },
+//  }));
+
 // Getting all the products
 productRoutes.route('/').get(function(req, res) {
     Product.find(function(err, products) {
@@ -24,7 +31,7 @@ productRoutes.route('/add').post(function(req, res) {
     const buyers = req.body.buyers;
     const status = req.body.status;
     const rating = req.body.rating;
-
+    
     // let product = new Product(req.body);
     const product = new Product(
         {
@@ -34,7 +41,8 @@ productRoutes.route('/add').post(function(req, res) {
             price,
             vendorid,
             buyers,
-            status
+            status,
+            rating,
         }
     );
     product.save()
@@ -48,7 +56,7 @@ productRoutes.route('/add').post(function(req, res) {
                 "vendorid": product.vendorid,
                 "buyers": product.buyers,
                 "status": product.status,
-                "rating": product.rating
+                "rating": product.rating,
                 });
         })
         .catch(err => {
@@ -64,7 +72,19 @@ productRoutes.route('/:id').get(function(req, res) {
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
+productRoutes.route('/getquantityleft/:id').get(function(req, res) {
+    let id = req.params.id;
+    Product.findById(id)
+      .then(product => res.json(product.quantityleft))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
 
+productRoutes.route('/status/:id').get(function(req, res) {
+    let id = req.params.id;
+    Product.findById(id)
+      .then(product => res.json(product.status))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
 
 // Deleting a product by id
 productRoutes.route('/:id').delete(function(req, res) {
@@ -86,6 +106,68 @@ productRoutes.route('/update/:id').post((req, res) => {
         product.buyers = req.body.buyers;
         product.status = req.body.status;
         product.rating = req.body.rating;
+
+        product.save()
+          .then(() => res.json('Product updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+productRoutes.route('/quantity/:id/:new').post((req, res) => {
+    console.log("Called");
+    Product.findById(req.params.id)
+      .then(product => {
+        product.quantityleft = req.params.new;
+        
+        product.save()
+          .then(() => res.json('Product updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+  productRoutes.route('/upquantity/:id/:new').post((req, res) => {
+    Product.findById(req.params.id)
+      .then(product => {
+        product.quantityleft = Number(product.quantityleft) + Number(req.params.new);
+        
+        product.save()
+          .then(() => res.json('Product updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+
+  productRoutes.route('/place/:id').post((req, res) => {
+    Product.findById(req.params.id)
+      .then(product => {
+        product.status = "ready to dispatch";
+
+        product.save()
+          .then(() => res.json('Product updated!',"yesppleaadse"))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+  productRoutes.route('/dispatch/:id').post((req, res) => {
+    Product.findById(req.params.id)
+      .then(product => {
+        product.status = "dispatched";
+        product.quantityleft = 2;
+        product.save()
+          .then(() => res.json('Product updated!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+
+  productRoutes.route('/cancel/:id').post((req, res) => {
+    Product.findById(req.params.id)
+      .then(product => {
+        product.status = "cancelled";
 
         product.save()
           .then(() => res.json('Product updated!'))

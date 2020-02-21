@@ -5,7 +5,8 @@ export default class CreateReview extends Component{
     constructor(props){
         super(props);
 
-        this.onChangeContent = this.onChangeContent.bind(this);
+        // this.onChangeContent = this.onChangeContent.bind(this);
+        this.onChangeRating = this.onChangeRating.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
 
@@ -14,30 +15,40 @@ export default class CreateReview extends Component{
             customerid: '',
             productid: '',
             content: '',
+            rating: '',
         }
     }
     
 
-    onChangeContent(e){
+    // onChangeContent(e){
+    //     this.setState({
+    //         content: e.target.value
+    //     });
+    // }
+    
+    onChangeRating(e){
         this.setState({
-            content: e.target.value
+            rating: e.target.value
         });
     }
-    
+
     onSubmit(e){
         e.preventDefault();
 
         const review= {
             vendorid: this.props.match.params.id,
-            productid: this.props.match.params.prodid,
-            customerid: localStorage.getItem("id"),//use user id
-            content: this.state.content,
+            rating: this.state.rating
         }
 
-        console.log(review);
-
-        axios.post('http://localhost:5000/reviews/add', review)
-            .then(res => console.log(res.data));
+        // console.log(review);
+        // var val = this.state.rating;
+        
+        axios.post('http://localhost:5000/reviews/rate', review)
+            .then(res => console.log(res.data))
+            .catch(error => {
+                alert(error);
+                console.log(error);
+            });
 
         // window.location = '/';
         this.setState({
@@ -45,21 +56,22 @@ export default class CreateReview extends Component{
             productid: '',
             customerid: '',
             content: '',
+            rating: '',
         });
     }
 
     render(){
         return(
         <div>
-            <h3>Create New Review for VendorId {this.props.match.params.id}</h3>
+            <h3>Give rating for Product {this.props.match.params.id}</h3>
             <form onSubmit={this.onSubmit}>
             <div className="form-group"> 
-                <label>Content: </label>
-                <input  type="text"
+                <label>Rating: </label>
+                <input  type="integer"
                     required
                     className="form-control"
-                    value={this.state.content}
-                    onChange={this.onChangeContent}
+                    value={this.state.rating}
+                    onChange={this.onChangeRating}
                     />
             </div>
             <div className="form-group">

@@ -1,14 +1,6 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-  
 
 export default class CreateOrder extends Component{
     constructor(props){
@@ -40,6 +32,7 @@ export default class CreateOrder extends Component{
         })
         .catch((error) =>{
             console.log(error);
+            alert(error);
         });
         this.setState({
             usertypes: ["order", "customer"]
@@ -88,9 +81,20 @@ export default class CreateOrder extends Component{
             status: "waiting",
         }
         console.log(this.state.product);
-        if(this.state.quantity === this.state.quantityleft){
-            order.status = "ready to dispatch";
-            this.state.status = "ready to dispatch";
+        console.log(this.state.quantity,"--");
+        console.log(this.state.quantityleft,"---");
+        if(this.state.quantity === "0"){
+            alert("Quantity cant be 0.")
+        }
+        else{
+        if(Number(this.state.quantity) === Number(this.state.quantityleft)){
+            console.log("comes here");
+            console.log(this.props.match.params.id);
+            axios.post('http://localhost:5000/products/place/' + this.props.match.params.id)
+            .then(res => console.log(res.data))
+            .catch(err => {
+                console.log(err);
+                alert(err)});
         }
 
         console.log(order);
@@ -98,9 +102,12 @@ export default class CreateOrder extends Component{
             .then(res => console.log(res))
             .catch(err => console.log(err));
         axios.post('http://localhost:5000/orders/add', order)
-            .then(res => console.log(res.data));
+            .then(res => console.log(res.data))
+            .catch(err => alert(err));
         console.log("Now");
-        }
+        alert("Order Created");
+    
+    }
         // window.location = '/';
         this.setState({
             quantity: '',
@@ -111,10 +118,11 @@ export default class CreateOrder extends Component{
             customerid: '',
             status: ''
         });
-        alert("Order Created");
+        }
         })
         .catch((error) =>{
             console.log(error);
+            alert(error);
         });
         // sleep(500);
      

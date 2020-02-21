@@ -5,21 +5,18 @@ let Review = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         required: true,
     },
-    // productid: {
-    //     type: mongoose.Schema.ObjectId,
-    //     required: true
-    // },
+    productid: {
+        type: mongoose.Schema.ObjectId,
+        required: true
+    },
     customerid: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
     content: {
         type: String,
+        trim: true,
         default: ''
-    },
-    rating: {
-        type: Number,
-        required: true
     }
 });
 

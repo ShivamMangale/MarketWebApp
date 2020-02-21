@@ -11,8 +11,6 @@ export default class CreateProduct extends Component{
         this.onChangePrice = this.onChangePrice.bind(this);
         this.onChangeQuantity = this.onChangeQuantity.bind(this);
         this.onChangeVendorId = this.onChangeVendorId.bind(this);
-        // this.onChangeType = this.onChangeType.bind(this);
-        // this.onChangeProducts = this.onChangeProducts.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
 
@@ -55,12 +53,6 @@ export default class CreateProduct extends Component{
         });
     }
 
-    // onChangeProducts(e){
-    //     this.setState({
-    //         products: e.target.value
-    //     });
-    // }
-
     onSubmit(e){
         e.preventDefault();
 
@@ -69,22 +61,27 @@ export default class CreateProduct extends Component{
             price: this.state.price,
             quantity: this.state.quantity,
             vendorid: localStorage.getItem("id"),
-            status: "Waiting",
-            // products: this.state.products
+            status: "waiting",
         }
 
         console.log(product);
+        if(product.quantity === "0"){
+            alert("Quantity cant be zero.");
+            console.log("Quantity is zero.")
+        }
+        else{
         axios.post('http://localhost:5000/products/add', product)
-            .then(res => console.log(res.data))
-            .catch(err => alert(err + " Please try again"));
-        // window.location = '/';
+            .then(res => {
+                console.log(res.data);
+                alert("Product Created Successfully.")})
+            .catch(err => alert(err + " Please check fields and try again"));
         this.setState({
             name: '',
             price: '',
             quantity: '',
             vendorid: '',
-            // products: ''
         });
+        }
     }
 
     render(){
@@ -119,7 +116,11 @@ export default class CreateProduct extends Component{
                     onChange={this.onChangeQuantity}
                     />
             </div>
-            <div className="form-group">
+            {/* <div>
+                <label for="img">Select image:</label>
+                <input type="file" id="img" name="img" value = accept="image/*"/>
+            </div> */}
+                <div className="form-group">
                 <input type="submit" value="Create Product Listing" className="btn btn-primary" />
             </div>
         </form>

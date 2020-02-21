@@ -7,7 +7,6 @@ export default class CreateVendor extends Component{
         super(props);
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
         // this.onChangeProducts = this.onChangeProducts.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -15,7 +14,6 @@ export default class CreateVendor extends Component{
 
         this.state = {
             username: '',
-            email: '',
             password: '',
             // products: '',
             type: '',
@@ -50,30 +48,17 @@ export default class CreateVendor extends Component{
         });
     }
     
-    onChangeEmail(e){
-        this.setState({
-            email: e.target.value
-        });
-    }
-
     onChangePassword(e){
         this.setState({
             password: e.target.value
         });
     }
 
-    // onChangeProducts(e){
-    //     this.setState({
-    //         products: e.target.value
-    //     });
-    // }
-
     onSubmit(e){
         e.preventDefault();
 
         const user = {
             username: this.state.username,
-            email: this.state.email,
             password: this.state.password,
             // products: this.state.products,
             type: ''
@@ -84,7 +69,7 @@ export default class CreateVendor extends Component{
 
         this.state.vendors.map(currentvendor => {
             //   console.log(currentvendor);
-            if(currentvendor.username === this.state.username && currentvendor.email === this.state.email){
+            if(currentvendor.username === this.state.username){
                 if(currentvendor.password === this.state.password){
                     this.setState({type: "vendor"});
                     console.log("found");
@@ -94,12 +79,13 @@ export default class CreateVendor extends Component{
                 }
                 else{
                     console.log("Wrong Password");
+                    alert("Wrong Password");
                 }
             }
         })
         this.state.customers.map(currentcustomer => {
             //   console.log(currentcustomer);
-            if(currentcustomer.username === this.state.username && currentcustomer.email === this.state.email){
+            if(currentcustomer.username === this.state.username){
                 if(currentcustomer.password === this.state.password){
                     this.setState({type: "customer"});
                     id = currentcustomer._id;
@@ -107,6 +93,7 @@ export default class CreateVendor extends Component{
                 }
                 else{
                     console.log("Wrong Password");
+                    alert("Wrong Password");
                 }
             }
         })
@@ -121,28 +108,23 @@ export default class CreateVendor extends Component{
             localStorage.setItem("id", id);
             console.log(localStorage.getItem("signin"));
     
-        if(flag === 1){//this.state.type === "vendor"){
-            // axios.post('http://localhost:5000/vendors/add', user)
-            // .then(res => console.log(res.data));
+        if(flag === 1){
             console.log("Vendor signed in");
+            alert("Signed in.Please Reload.");
             localStorage.setItem("usertype", "vendor");
         }
         else{
-            // axios.post('http://localhost:5000/customers/add', user)
-            // .then(res => console.log(res.data));
             console.log("Customer signed in");
+            alert("Signed in.Please Reload.");
             localStorage.setItem("usertype", "customer");
         }
         }
         else{
             console.log("couldnt signin");
         }
-        // window.location = '/';
         this.setState({
             username: '',
-            email: '',
             password: '',
-            // products: ''
         });
     }
 
@@ -161,15 +143,6 @@ export default class CreateVendor extends Component{
                     />
             </div>
             <div className="form-group"> 
-                <label>Email: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.email}
-                    onChange={this.onChangeEmail}
-                    />
-            </div>
-            <div className="form-group"> 
                 <label>Password: </label>
                 <input  type="text"
                     required
@@ -178,23 +151,6 @@ export default class CreateVendor extends Component{
                     onChange={this.onChangePassword}
                     />
             </div>
-            {/* <div className="form-group"> 
-                <label>Products: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.products}
-                    onChange={this.onChangeProducts}
-                    />
-            </div> */}
-            {/* <div className="form-group">
-                <form>
-                    <input type="radio" id="vendor" name="gender" value="vendor"></input>
-                    <label for="vendor">Vendor</label><br></br>
-                    <input type="radio" id="customer" name="gender" value="customer"></input>
-                    <label for="customer">Customer</label>
-                </form> 
-            </div> */}
             <div className="form-group">
                 <input type="submit" value="Sign In" className="btn btn-primary" />
             </div>

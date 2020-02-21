@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+var uniqueValidator = require('mongoose-unique-validator');
+
+
 // var productid = new mongoose.Schema({
 //     // name: String,
 //     // quantity: Number,
@@ -8,17 +11,15 @@ const mongoose = require('mongoose');
 // })
 
 let Vendor = new mongoose.Schema({
-    // _id: Number,
     username: {
         type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
+        required: true,
+        trim: true,
+        unique: true
     },
     password: {
         type: String,
+        trim: true,
         required: true
     },
     products: [mongoose.Schema.ObjectId],
@@ -31,5 +32,9 @@ let Vendor = new mongoose.Schema({
         default: '5'
     }
 });
+
+Vendor.plugin(uniqueValidator);
+Vendor.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });
+
 
 module.exports = mongoose.model('Vendor', Vendor);

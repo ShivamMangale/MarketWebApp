@@ -19,9 +19,10 @@ if waiting quantity left
 able to rate and review seller on order placement
 
 
+doubleclick links to ensure correct implementation
+
 
 trim in mongodb
-
 
 --------------------------------------------------------------------------------------------------------------------------------
 complete routes/(customers.js,products.js,orders.js)

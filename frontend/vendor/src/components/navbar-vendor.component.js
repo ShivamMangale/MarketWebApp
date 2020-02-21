@@ -22,7 +22,7 @@ export default class Navbar extends Component {
           <Link to="/create" className="nav-link">Create Product Listing</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/" className="nav-link" onClick={() => { localStorage.clear() }}>Sign Out</Link>
+          <Link to="/" className="nav-link" onClick={() => { localStorage.clear(); alert("Please Reload.") }}>Sign Out</Link>
           </li>
         </ul>
         </div>

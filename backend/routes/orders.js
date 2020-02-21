@@ -25,7 +25,6 @@ orderRoutes.route('/add').post(function(req, res) {
     const price = req.body.price;
     const vendorid = req.body.vendorid;
     const customerid = req.body.customerid;
-    const status = req.body.status;
     // let order = new Order(req.body);
     const order = new Order(
         {
@@ -35,7 +34,6 @@ orderRoutes.route('/add').post(function(req, res) {
             price,
             vendorid,
             customerid,
-            status,
         }
     );
     order.save()
@@ -48,7 +46,6 @@ orderRoutes.route('/add').post(function(req, res) {
                 "price": order.price,
                 "vendorid": order.vendorid,
                 "customerid": order.customerid,
-                "status": order.status,
                 });
         })
         .catch(err => {
@@ -65,6 +62,22 @@ orderRoutes.route('/:id').get(function(req, res) {
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
+orderRoutes.route('/productid/:id').get(function(req, res) {
+    // console.log("in id");
+    let id = req.params.id;
+    Order.findById(id)
+      .then(order => res.json(order.productid))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
+
+
+orderRoutes.route('/quantity/:id').get(function(req, res) {
+    // console.log("in id");
+    let id = req.params.id;
+    Order.findById(id)
+      .then(order => res.json(order.quantity))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
 
 
 // Deleting a order by id
@@ -91,6 +104,12 @@ orderRoutes.route('/update/:id').post((req, res) => {
       })
       .catch(err => res.status(400).json('Error: ' + err));
   });
+
+  orderRoutes.route('/cancel/:id').post((req, res) => {
+    console.log("in cancelled");
+    // Order.update({"productid": this.props.match.params.id}, {"$set":{"status": "cancelled"}}, {"multi": true}, (err, writeResult) => {});
+    Order.updateMany({"productid": this.props.match.params.id}, {"$set":{"status": "cancelled"}});
+});
   
 
 module.exports = orderRoutes;

@@ -35,7 +35,8 @@ export default class ProductList extends Component{
                       review: [],
                       sorttype: 'price', 
                       types: ["price", "quantity left", "seller rating"],
-                      quantityleft: ''
+                      quantityleft: '',
+                      ratings: []
                     };
     }
 
@@ -54,6 +55,16 @@ export default class ProductList extends Component{
             .then(response =>{
                 console.log("Entered");
                 this.setState({ review: response.data });
+                console.log(this.state.review);
+            })
+            .catch((error) =>{
+                console.log(error);
+                alert(error);
+            });
+        axios.get('http://localhost:5000/reviews/ratings')
+            .then(response =>{
+                console.log("Entered");
+                this.setState({ ratings: response.data });
                 console.log(this.state.review);
             })
             .catch((error) =>{
@@ -81,9 +92,9 @@ export default class ProductList extends Component{
         let val = 0;
         let co = 0;
         let final = 0.0;
-        this.state.review.map(currentreview => {
-          if(currentreview.vendorid === id){
-              val = val + currentreview.rating;
+        this.state.ratings.map(currentrating => {
+          if(currentrating.vendorid === id){
+              val = val + currentrating.rating;
               co = co + 1;
           }
           })
@@ -91,6 +102,9 @@ export default class ProductList extends Component{
           co = 1;
         }
         final = val/co;
+        if(final === 0){
+          final = "N/A";
+        }
         console.log(id," ",val);
         return final;
       }
@@ -175,9 +189,10 @@ export default class ProductList extends Component{
                     {/* <th>Status</th> */}
                     <th>VendorId</th>
                     <th>Rating</th>
+                    <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody bgcolor="#E6E6FA">
                     { this.productList() }
                 </tbody>
                 </table>

@@ -37,7 +37,7 @@ customerRoutes.route('/add').post(function(req, res) {
                 "password": customer.password});
         })
         .catch(err => {
-            res.status(400).send('Errors' + err);
+            res.status(400).send(err);
         });
 });
 

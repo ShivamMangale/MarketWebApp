@@ -12,6 +12,7 @@ let Order = new mongoose.Schema({
     },
     productname: {
         type: String,
+        trim: true,
         required: true
     },
     quantity: {
@@ -30,9 +31,9 @@ let Order = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         required: true
     },
-    status: {
-        type: String,
-        required: true
+    rating :{
+        type: Number,
+        default: -1
     }
 });
 

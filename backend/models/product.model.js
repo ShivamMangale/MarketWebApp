@@ -8,6 +8,7 @@ var booking = new mongoose.Schema({
 let Product = new mongoose.Schema({
     name: {
         type: String,
+        trim: true,
         required: true
     },
     quantity: {
@@ -29,6 +30,7 @@ let Product = new mongoose.Schema({
     buyers: [booking],
     status: {
         type: String,
+        trim: true,
         // required: true
     },
     rating: {

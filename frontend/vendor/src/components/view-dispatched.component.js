@@ -47,20 +47,21 @@ export default class ProductList extends Component{
 
       productList() {
         return this.state.product.map(currentproduct => {
-        //   console.log(currentproduct);
-        if(currentproduct.status === "dispatched"){
+          if(currentproduct.vendorid === localStorage.getItem("id")){
+          if(currentproduct.status === "dispatched"){
           return <Product product={currentproduct} deleteProduct={this.deleteProduct} key={currentproduct._id}/>;
         }
         else{
             return null;
         }
+      }
         })
       }
 
     render(){
         return(
              <div>
-                <h3>Product</h3>
+                <h3>Dispatched Products</h3>
                 <table className="table">
                 <thead className="thead-light">
                     <tr>

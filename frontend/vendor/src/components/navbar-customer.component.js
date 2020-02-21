@@ -9,9 +9,6 @@ export default class Navbar extends Component {
         <Link to="/" className="navbar-brand">Bulk Order</Link>
         <div className="collpase navbar-collapse">
         <ul className="navbar-nav mr-auto">
-          {/* <li className="navbar-item">
-          <Link to="/viewreviews" className="nav-link">Products List</Link>
-          </li> */}
           <li className="navbar-item">
           <Link to="/create" className="nav-link">Order a Product</Link>
           </li>
@@ -19,7 +16,7 @@ export default class Navbar extends Component {
           <Link to="/viewall" className="nav-link">Your Orders</Link>
           </li>
           <li className="navbar-item">
-          <Link to="/" className="nav-link" onClick={() => { localStorage.clear() }}>Sign Out</Link>
+          <Link to="/" className="nav-link" onClick={() => { localStorage.clear(); alert("Please Reload.") }}>Sign Out</Link>
           </li>
         </ul>
         </div>

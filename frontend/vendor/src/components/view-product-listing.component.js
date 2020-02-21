@@ -55,7 +55,6 @@ export default class ProductList extends Component{
 
       productList() {
         return this.state.product.map(currentproduct => {
-        //   console.log(currentproduct);
         if(currentproduct.vendorid === localStorage.getItem("id")){
         if(currentproduct.status === "ready to dispatch" || currentproduct.status === "dispatched"){
             return null;
@@ -71,10 +70,7 @@ export default class ProductList extends Component{
         return(
           <div>
           <div>
-          <h3>Products List</h3>
-          </div>
-             <div>
-                <h3>Product</h3>
+                <h3>Products List</h3>
                 <table className="table">
                 <thead className="thead-light">
                     <tr>
@@ -83,7 +79,7 @@ export default class ProductList extends Component{
                     <th>Quantity Left</th>
                     <th>Status</th>
                     <th>VendorId</th>
-                    <th>Customers</th>
+                    <th></th>
                     <th></th>
                     </tr>
                 </thead>
